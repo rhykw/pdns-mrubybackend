@@ -1,14 +1,17 @@
 # pdns-mrubybackend
 
-PowerDNSのバックエンドとしてmrubyスクリプトを使用するためのモジュールです。
+## What is pdns-mrubybackend
+__pdns-mrubybackend is backend extension module using Scripting Language mruby for PowerDNS.__
 
-サンプルとして、データベースではなくハッシュ変数内にレコード情報を
-持たせたスクリプトが付属しています。
+## Install
 
-## ビルド方法
+Please use `build.sh`
 
-付属の `build.sh` を実行してください。
-実行すると `$HOME/opt/pdns` にPowerDNSがインストールされます。
+```
+sh ./build.sh
+```
 
-インストール先を変更したい場合には `build.sh` 内の `PREFIX` を変更してください。
+# License
+under the MIT License:
 
+* http://www.opensource.org/licenses/mit-license.php
