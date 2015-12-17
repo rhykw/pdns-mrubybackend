@@ -1,0 +1,14 @@
+GPATH
+GRTAGS
+GTAGS
+GSYMS
+mrbgems_config
+Makefile
+config.status
+config.log
+tags
+*.swp
+build/
+autom4te.cache/
+*.o
+*.so

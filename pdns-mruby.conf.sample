@@ -1,0 +1,11 @@
+
+launch=mruby
+load-modules=mruby
+mruby-filename=pdns-backend.rb
+mruby-initcode=p "This is init code.";init;
+mruby-lookupcode=lookup
+
+query-cache-ttl=0
+cache-ttl=0
+loglevel=7
+log-dns-details=no
