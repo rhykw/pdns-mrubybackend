@@ -46,7 +46,7 @@ sh ./build.sh
 2. geoip balancing
 
     pdns-backend.rb
-    ```
+    ```ruby
     def lookup
       Powerdns::answer.clear
     
@@ -67,7 +67,7 @@ sh ./build.sh
     end
     ```
     response
-    ```
+    ```sh
     dig @172.17.42.53 ANY geo.example.com.
 
     ;; QUESTION SECTION:
