@@ -47,6 +47,8 @@ sh ./build.sh
 
     pdns-backend.rb
     ```ruby
+    $db_path = "/usr/share/GeoIP/GeoIPCity.dat"
+    $geoip   = GeoIP.new $db_path
     def lookup
       Powerdns::answer.clear
     
