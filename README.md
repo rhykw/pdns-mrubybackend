@@ -1,7 +1,8 @@
 # pdns-mrubybackend
 
 ## What is pdns-mrubybackend
-__pdns-mrubybackend is backend extension module using Scripting Language mruby for PowerDNS.__
+__pdns-mrubybackend is backend extension module using Scripting Language [mruby](http://www.mruby.org/) for [PowerDNS](https://github.com/PowerDNS/pdns).__
+
 
 ## Install
 
