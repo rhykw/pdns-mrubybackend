@@ -1,0 +1,14 @@
+language: c
+compiler:
+  - gcc
+before_install:
+    - sudo apt-get -qq update
+install:
+    - sudo apt-get -qq install git wget ruby gcc rake make bison g++ libboost-all-dev libmysql++-dev libgeoip-dev
+#before_script:
+#  - cd ../
+#  - git clone https://github.com/mruby/mruby.git
+#  - cd mruby
+#  - cp -fp ../mruby-namespace/.travis_build_config.rb build_config.rb
+script:
+  - bash ./build.sh
