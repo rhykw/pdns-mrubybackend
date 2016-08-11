@@ -4,7 +4,7 @@ compiler:
 before_install:
     - sudo apt-get -qq update
 install:
-    - sudo apt-get -qq install git wget ruby gcc rake make bison g++ libboost-all-dev libmysql++-dev libgeoip-dev
+    - sudo apt-get -qq install git wget ruby gcc rake make bison g++ libboost-dev libboost-program-options-dev libboost-serialization-dev libmysql++-dev libgeoip-dev
 #before_script:
 #  - cd ../
 #  - git clone https://github.com/mruby/mruby.git
