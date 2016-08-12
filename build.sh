@@ -36,6 +36,10 @@ else
         mkdir build
     fi
     cd build
+    if [ -e pdns-src ]; then
+        unlink pdns-src
+    fi
+    ln -s ${PDNS_SRC_VER} pdns-src
     if [ ! -e ${PDNS_SRC_VER} ]; then
         wget https://downloads.powerdns.com/releases/${PDNS_SRC_VER}.tar.bz2
         echo "powerdns Downloading ... Done"
