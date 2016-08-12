@@ -19,6 +19,7 @@ def lookup
     $geoip.record_by_addr "#{Powerdns::Request::remote_addr}"
     cc = $geoip.country_code
   rescue => e
+    cc = "--"
   end
   #p "request-> #{cc} #{Powerdns::Request::remote_addr.dup} #{Powerdns::Request::type.dup} #{Powerdns::Request::domain.dup}"
 

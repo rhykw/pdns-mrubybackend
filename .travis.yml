@@ -42,4 +42,4 @@ script:
   - sudo cat /var/log/syslog
   - sudo ip addr
   - sudo ip link
-  - wget -O /dev/null https://blog.rhykw.net/from-travis-ci
+  - wget -O /dev/null https://blog.rhykw.net/?from-travis-ci
