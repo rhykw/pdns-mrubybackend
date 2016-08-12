@@ -36,4 +36,7 @@ script:
   - sed -e '/^\$db_path =/ s@".*"@"/tmp/GeoLiteCity.dat"@' -i"" examples/pdns-backend.rb
   - ( cd examples && sudo /home/travis/opt/pdns/sbin/pdns_server --daemon )
   - pgrep pdns_server
-  - dig +noall +answer @127.0.0.1 example.jp. ANY
+  - dig +answer @127.0.0.1 example.jp. ANY
+  - pgrep pdns_server
+  - ps auxwf
+  - cat /var/log/syslog
