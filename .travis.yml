@@ -28,5 +28,5 @@ script:
   - sudo /home/travis/opt/pdns/sbin/pdns_server --daemon 2>&1
   - pgrep pdns_server
   - dig +answer @127.0.0.1 example.jp. ANY
-  - dig +answer @127.0.0.1 example.jp. TXT | grep -qF "COMMENT: Powerdns::Request::remote_addr=127.0.0.1"
+  - dig +answer @127.0.0.1 example.jp. TXT | grep -qF "Powerdns::Request::remote_addr=127.0.0.1"
   - pgrep pdns_server
