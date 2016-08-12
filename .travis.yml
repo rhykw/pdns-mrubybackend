@@ -1,0 +1,32 @@
+sudo: required
+language: cpp
+compiler:
+  - gcc
+addons:
+  apt:
+    packages:
+    - git
+    - wget
+    - ruby
+    - gcc
+    - make
+    - bison
+    - g++
+    - libboost-dev
+    - libboost-program-options-dev
+    - libboost-serialization-dev
+    - libmysql++-dev
+    - libgeoip-dev
+    - dnsutils
+before_script:
+  - wget -O - "http://geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.gz" | gunzip > /tmp/GeoLiteCity.dat
+script:
+  - bash ./build.sh
+  - sed -e '/mruby-filename=/ s@^.*$@mruby-filename=/home/travis/opt/pdns/etc/pdns-backend.rb@'  pdns-mruby.conf.sample > /home/travis/opt/pdns/etc/pdns.conf
+  - cp src/libmrubybackend.so /home/travis/opt/pdns/lib/pdns/
+  - sed -e '/^\$db_path =/ s@".*"@"/tmp/GeoLiteCity.dat"@' examples/pdns-backend.rb > /home/travis/opt/pdns/etc/pdns-backend.rb
+  - sudo /home/travis/opt/pdns/sbin/pdns_server --daemon 2>&1
+  - pgrep pdns_server
+  - dig +answer @127.0.0.1 example.jp. ANY
+  - dig +answer @127.0.0.1 example.jp. TXT | grep -qF "Powerdns::Request::remote_addr=127.0.0.1"
+  - pgrep pdns_server
