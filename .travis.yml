@@ -19,6 +19,7 @@ addons:
     - libmysql++-dev
     - libgeoip-dev
     - dnsutils
+    - strace
 #before_install:
 #    - sudo apt-get -qq update
 #install:
@@ -34,7 +35,7 @@ script:
   - cp src/libmrubybackend.so /home/travis/opt/pdns/lib/pdns/
   - wget -O - "http://geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.gz" | gunzip > /tmp/GeoLiteCity.dat
   - sed -e '/^\$db_path =/ s@".*"@"/tmp/GeoLiteCity.dat"@' examples/pdns-backend.rb > /home/travis/opt/pdns/etc/pdns-backend.rb
-  - sudo /home/travis/opt/pdns/sbin/pdns_server --daemon
+  - sudo strace /home/travis/opt/pdns/sbin/pdns_server 2>&1
   - pgrep pdns_server
   - dig +answer @127.0.0.1 example.jp. ANY
   - pgrep pdns_server
