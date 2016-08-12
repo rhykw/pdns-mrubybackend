@@ -19,28 +19,18 @@ addons:
     - libmysql++-dev
     - libgeoip-dev
     - dnsutils
-    - strace
-#before_install:
-#    - sudo apt-get -qq update
-#install:
-#    - sudo apt-get -qq install git wget ruby gcc rake make bison g++ libboost-dev libboost-program-options-dev libboost-serialization-dev libmysql++-dev libgeoip-dev
-#before_script:
-#  - cd ../
-#  - git clone https://github.com/mruby/mruby.git
-#  - cd mruby
-#  - cp -fp ../mruby-namespace/.travis_build_config.rb build_config.rb
 script:
   - bash ./build.sh
   - sed -e '/mruby-filename=/ s@^.*$@mruby-filename=/home/travis/opt/pdns/etc/pdns-backend.rb@'  pdns-mruby.conf.sample > /home/travis/opt/pdns/etc/pdns.conf
   - cp src/libmrubybackend.so /home/travis/opt/pdns/lib/pdns/
   - wget -O - "http://geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.gz" | gunzip > /tmp/GeoLiteCity.dat
   - sed -e '/^\$db_path =/ s@".*"@"/tmp/GeoLiteCity.dat"@' examples/pdns-backend.rb > /home/travis/opt/pdns/etc/pdns-backend.rb
-  - sudo strace /home/travis/opt/pdns/sbin/pdns_server 2>&1
+  - sudo /home/travis/opt/pdns/sbin/pdns_server --daemon 2>&1
   - pgrep pdns_server
   - dig +answer @127.0.0.1 example.jp. ANY
   - pgrep pdns_server
-  - ps auxwf
-  - sudo cat /var/log/syslog
-  - sudo ip addr
-  - sudo ip link
+#  - ps auxwf
+#  - sudo cat /var/log/syslog
+#  - sudo ip addr
+#  - sudo ip link
   - wget -O /dev/null https://blog.rhykw.net/?from-travis-ci
