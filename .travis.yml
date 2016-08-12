@@ -32,6 +32,8 @@ script:
   - bash ./build.sh
   - cp pdns-mruby.conf.sample /home/travis/opt/pdns/etc/pdns.conf
   - cp src/libmrubybackend.so /home/travis/opt/pdns/lib/pdns/
+  - wget -O - "http://geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.gz" | gunzip > /tmp/GeoLiteCity.dat
+  - sed -e '/^\$db_path =/ s@".*"@"/tmp/GeoLiteCity.dat"@' -i"" examples/pdns-backend.rb
   - ( cd examples && sudo /home/travis/opt/pdns/sbin/pdns_server --daemon )
   - pgrep pdns_server
   - dig +noall +answer @127.0.0.1 example.jp. ANY
