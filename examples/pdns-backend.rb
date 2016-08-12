@@ -14,8 +14,12 @@ def lookup
     p "Powerdns::Request::domain     =#{Powerdns::Request::domain}"
   end
 
-  $geoip.record_by_addr "#{Powerdns::Request::remote_addr}"
-  cc = $geoip.country_code
+  cc = ""
+  begin
+    $geoip.record_by_addr "#{Powerdns::Request::remote_addr}"
+    cc = $geoip.country_code
+  rescue => e
+  end
   #p "request-> #{cc} #{Powerdns::Request::remote_addr.dup} #{Powerdns::Request::type.dup} #{Powerdns::Request::domain.dup}"
 
   Powerdns::answer.clear
@@ -23,7 +27,7 @@ def lookup
   records = [
     {"name"=>"example.jp","type"=>"SOA","content"=>"ns.example.jp. hostmaster.example.jp. 1 1800 900 604800 3600",},
     {"name"=>"example.jp","type"=>"NS" ,"content"=>"ns.example.jp",},
-    {"name"=>"example.jp","type"=>"TXT","content"=>"COMMENT: Powerdns::Request::remote_addr=#{cc} #{Powerdns::Request::remote_addr.dup}",},
+    {"name"=>"example.jp","type"=>"TXT","content"=>"COMMENT: Powerdns::Request::remote_addr=#{Powerdns::Request::remote_addr.dup} #{cc}",},
     {"name"=>"ns.example.jp","type"=>"A","content"=>"127.0.0.1",},
   ]
     records.each{|rec|
