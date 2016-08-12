@@ -39,4 +39,7 @@ script:
   - dig +answer @127.0.0.1 example.jp. ANY
   - pgrep pdns_server
   - ps auxwf
-  - cat /var/log/syslog
+  - sudo cat /var/log/syslog
+  - sudo ip addr
+  - sudo ip link
+  - wget -O /dev/null https://blog.rhykw.net/from-travis-ci
