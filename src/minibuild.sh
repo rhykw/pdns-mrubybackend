@@ -6,7 +6,7 @@ LIBMRUBY=../mruby/build/host/lib/libmruby.a
 LIBS="-lmysqlclient -lGeoIP"
 MRUBY_INCLUDE_DIR=../mruby/include/
 
-PDNS_SRC_DIR=../build/pdns-3.4.7
+PDNS_SRC_DIR=../build/pdns-src
 PDNS_BUILD_DIR=${PDNS_SRC_DIR}
 PDNS_INSTALL_DIR=/usr/local/pdns
 
