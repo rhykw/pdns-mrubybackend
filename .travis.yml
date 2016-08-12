@@ -30,11 +30,11 @@ addons:
 #  - cp -fp ../mruby-namespace/.travis_build_config.rb build_config.rb
 script:
   - bash ./build.sh
-  - cp pdns-mruby.conf.sample /home/travis/opt/pdns/etc/pdns.conf
+  - sed -e '/mruby-filename=/ s@^.*$@mruby-filename=/home/travis/opt/pdns/etc/pdns-backend.rb@'  pdns-mruby.conf.sample > /home/travis/opt/pdns/etc/pdns.conf
   - cp src/libmrubybackend.so /home/travis/opt/pdns/lib/pdns/
   - wget -O - "http://geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.gz" | gunzip > /tmp/GeoLiteCity.dat
-#  - sed -e '/^\$db_path =/ s@".*"@"/tmp/GeoLiteCity.dat"@' -i"" examples/pdns-backend.rb
-  - ( cd examples && ls -al pdns-backend.rb && cat pdns-backend.rb && sudo /home/travis/opt/pdns/sbin/pdns_server --daemon )
+  - sed -e '/^\$db_path =/ s@".*"@"/tmp/GeoLiteCity.dat"@' examples/pdns-backend.rb > /home/travis/opt/pdns/etc/pdns-backend.rb
+  - sudo /home/travis/opt/pdns/sbin/pdns_server --daemon
   - pgrep pdns_server
   - dig +answer @127.0.0.1 example.jp. ANY
   - pgrep pdns_server
