@@ -1,3 +1,4 @@
+#include "config.h"
 #include "pdns/utility.hh"
 #include "pdns/dnsbackend.hh"
 #include "pdns/dns.hh"
@@ -55,6 +56,9 @@ public:
     string mrb_filename = getArg("filename");
     init_code = getArg("initcode");
     lookup_code = getArg("lookupcode");
+    nodot_flag = getArg("compat3x") == "yes" ? true : false;
+
+    /* fprintf(stderr, "nodot_flag=%d\n", nodot_flag); */
 
     PowerdnsMrubyBackend::install_mrb_class(mrb);
     mrb_gc_arena_restore(mrb, 0);
@@ -80,19 +84,19 @@ public:
     code_execute(init_code);
   }
 
-  bool list(const string &target, int id, bool include_disabled)
+  bool list(const DNSName &target, int id, bool include_disabled)
   {
     return false; // we don't support AXFR
   }
 
-  void lookup(const QType &type, const string &qdomain, DNSPacket *p,
+  void lookup(const QType &type, const DNSName &qdomain, DNSPacket *p,
               int zoneId)
   {
     map<string, string> the_request;
 
-    the_request["remote_addr"] = p->getRemote();
+    the_request["remote_addr"] = p->getRemote().toString();
     the_request["type"] = type.getName();
-    the_request["domain"] = qdomain;
+    the_request["domain"] = qdomain.toString(".",!nodot_flag);
 
     PowerdnsMrubyBackend::set_request(mrb, the_request);
 
@@ -146,7 +150,7 @@ public:
     record.auth = 1;
     record.qtype = QType(QType::chartocode(recordMap["type"].c_str()));
     record.content = recordMap["content"];
-    record.qname = recordMap["name"];
+    record.qname = DNSName(recordMap["name"]);
     rr = record;
 
     d_ri++;
@@ -170,6 +174,7 @@ private:
 
   string init_code;
   string lookup_code;
+  bool nodot_flag;
 };
 
 /* SECOND PART */
@@ -185,6 +190,7 @@ public:
     declare(suffix, "filename", "Filename of the script for mruby backend", "");
     declare(suffix, "initcode", "Init Code", "");
     declare(suffix, "lookupcode", "Lookup Code", "");
+    declare(suffix, "compat3x", "pdns-3.x compat", "yes");
   }
   DNSBackend *make(const string &suffix = "")
   {
@@ -205,7 +211,7 @@ public:
     BackendMakers().report(new MrubyFactory);
     L << Logger::Info
       << "[mrubybackend] This is the mruby backend version " VERSION
-         " (" __DATE__ ", " __TIME__ ") reporting" << endl;
+      << " (" __DATE__ ", " __TIME__ ") reporting" << endl;
   }
 };
 
