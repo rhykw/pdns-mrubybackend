@@ -58,13 +58,13 @@ echo "pdns configure ..."
 ( cd build/${PDNS_SRC_VER} && ./configure ${PDNS_CONFIG_OPT} )
 echo "pdns configure ... Done"
 
-echo "pdns building ... "
-( cd build/${PDNS_SRC_VER} && make && make install )
-echo "pdns building ... Done"
+#echo "pdns building ... "
+#( cd build/${PDNS_SRC_VER} && make && make install )
+#echo "pdns building ... Done"
 
 echo "mrubybackend building ..."
 ( cd src && ./minibuild.sh )
-cp src/libmrubybackend.so $PREFIX/lib/pdns/
+#cp src/libmrubybackend.so $PREFIX/lib/pdns/
 echo "mrubybackend building ... Done"
 
 
