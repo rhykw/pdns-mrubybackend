@@ -34,3 +34,4 @@ script:
   - dig +answer @127.0.0.1 example.jp. ANY
   - dig +answer @127.0.0.1 example.jp. TXT | grep -qF "Powerdns::Request::remote_addr=127.0.0.1"
   - pgrep pdns_server
+  - sudo tail -n60 /var/log/syslog
