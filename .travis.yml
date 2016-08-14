@@ -22,15 +22,13 @@ addons:
 before_script:
   - wget -O - "http://geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.gz" | gunzip > /tmp/GeoLiteCity.dat
   - sudo bash build-scripts/travis-install-pdns.sh
-  - sudo mkdir -p /usr/lib/powerdns/ && sudo touch /usr/lib/powerdns/libmrubybackend.so
   - sudo cp pdns-mruby.conf.sample /etc/powerdns/pdns.conf
   - sudo sed -e '/mruby-filename=/ s@^.*$@mruby-filename=/etc/powerdns/pdns-backend.rb@' -i /etc/powerdns/pdns.conf
   - sudo cp examples/pdns-backend.rb /etc/powerdns/pdns-backend.rb
   - sudo sed -e '/^\$db_path =/ s@".*"@"/tmp/GeoLiteCity.dat"@' -i /etc/powerdns/pdns-backend.rb
 script:
   - bash ./build.sh
-  - sudo cp src/libmrubybackend.so /usr/lib/x86_64-linux-gnu/libmrubybackend.so
-  - sudo cp src/libmrubybackend.so /usr/lib/powerdns/libmrubybackend.so
+  - sudo cp src/libmrubybackend.so /usr/lib/x86_64-linux-gnu/pdns/libmrubybackend.so
   - sudo /usr/sbin/pdns_server --daemon 2>&1
   - pgrep pdns_server
   - dig +answer @127.0.0.1 example.jp. ANY
