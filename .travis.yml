@@ -21,7 +21,7 @@ addons:
     - dnsutils
 before_script:
   - wget -O - "http://geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.gz" | gunzip > /tmp/GeoLiteCity.dat
-  - bash build-scripts/travis-install-pdns.sh
+  - sudo bash build-scripts/travis-install-pdns.sh
 script:
   - bash ./build.sh
   - sed -e '/mruby-filename=/ s@^.*$@mruby-filename=/etc/powerdns/pdns-backend.rb@'  pdns-mruby.conf.sample > /etc/powerdns/pdns.conf
