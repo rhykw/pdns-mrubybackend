@@ -19,6 +19,7 @@ addons:
     - libmysql++-dev
     - libgeoip-dev
     - dnsutils
+    - lsof
 before_script:
   - wget -O - "http://geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.gz" | gunzip > /tmp/GeoLiteCity.dat
   - sudo bash build-scripts/travis-install-pdns.sh
@@ -34,4 +35,5 @@ script:
   - dig +answer @127.0.0.1 example.jp. ANY
   - dig +answer @127.0.0.1 example.jp. TXT | grep -qF "Powerdns::Request::remote_addr=127.0.0.1"
   - pgrep pdns_server
-  - sudo tail -n60 /var/log/syslog
+  - sudo grep -F pdns /var/log/syslog
+  - lsof -n
