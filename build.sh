@@ -4,6 +4,7 @@ set -e
 
 . ./pdns_version
 
+BUILD_PDNS=${BUILD_PDNS:-no}
 PREFIX=$HOME/opt/pdns
 
 if [ "$PDNS_CONFIG_OPT_ENV" != "" ]; then
@@ -58,9 +59,11 @@ echo "pdns configure ..."
 ( cd build/${PDNS_SRC_VER} && ./configure ${PDNS_CONFIG_OPT} )
 echo "pdns configure ... Done"
 
-#echo "pdns building ... "
-#( cd build/${PDNS_SRC_VER} && make && make install )
-#echo "pdns building ... Done"
+if [ "${BUILD_PDNS}" = "yes" ]; then
+    echo "pdns building ... "
+    ( cd build/${PDNS_SRC_VER} && make && make install )
+    echo "pdns building ... Done"
+fi
 
 echo "mrubybackend building ..."
 ( cd src && ./minibuild.sh )
