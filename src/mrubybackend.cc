@@ -1,36 +1,36 @@
-#include "pdns/utility.hh"
-#include "pdns/dnsbackend.hh"
+#include "config.h"
 #include "pdns/dns.hh"
 #include "pdns/dnsbackend.hh"
+#include "pdns/dnsbackend.hh"
 #include "pdns/dnspacket.hh"
-#include "pdns/pdnsexception.hh"
 #include "pdns/logger.hh"
+#include "pdns/pdnsexception.hh"
+#include "pdns/utility.hh"
 #include "pdns/version.hh"
 #include <boost/algorithm/string.hpp>
+#include <exception>
 #include <iostream>
 #include <map>
-#include <exception>
 #include <string>
 
 extern "C" {
 #include <mruby.h>
-#include <mruby/compile.h>
+#include <mruby/array.h>
 #include <mruby/class.h>
+#include <mruby/compile.h>
 #include <mruby/data.h>
+#include <mruby/error.h>
+#include <mruby/hash.h>
 #include <mruby/proc.h>
 #include <mruby/string.h>
-#include <mruby/array.h>
 #include <mruby/variable.h>
-#include <mruby/hash.h>
-#include <mruby/error.h>
 #include <unistd.h>
 }
 
 namespace PowerdnsMrubyBackend
 {
 void set_request(mrb_state *, map<string, string>);
-std::vector<std::map<std::string, std::string> >
-get_answer_records(mrb_state *);
+std::vector<std::map<std::string, std::string>> get_answer_records(mrb_state *);
 void install_mrb_class(mrb_state *);
 }
 
@@ -55,6 +55,7 @@ public:
     string mrb_filename = getArg("filename");
     init_code = getArg("initcode");
     lookup_code = getArg("lookupcode");
+    nodot_flag = getArg("compat3x") == "yes" ? true : false;
 
     PowerdnsMrubyBackend::install_mrb_class(mrb);
     mrb_gc_arena_restore(mrb, 0);
@@ -80,19 +81,19 @@ public:
     code_execute(init_code);
   }
 
-  bool list(const string &target, int id, bool include_disabled)
+  bool list(const DNSName &target, int id, bool include_disabled)
   {
     return false; // we don't support AXFR
   }
 
-  void lookup(const QType &type, const string &qdomain, DNSPacket *p,
+  void lookup(const QType &type, const DNSName &qdomain, DNSPacket *p,
               int zoneId)
   {
     map<string, string> the_request;
 
-    the_request["remote_addr"] = p->getRemote();
+    the_request["remote_addr"] = p->getRemote().toString();
     the_request["type"] = type.getName();
-    the_request["domain"] = qdomain;
+    the_request["domain"] = qdomain.toString(".", !nodot_flag);
 
     PowerdnsMrubyBackend::set_request(mrb, the_request);
 
@@ -146,7 +147,7 @@ public:
     record.auth = 1;
     record.qtype = QType(QType::chartocode(recordMap["type"].c_str()));
     record.content = recordMap["content"];
-    record.qname = recordMap["name"];
+    record.qname = DNSName(recordMap["name"]);
     rr = record;
 
     d_ri++;
@@ -162,14 +163,15 @@ public:
 
 private:
   int d_ri_cnt;
-  std::vector<std::map<std::string, std::string> > d_records;
-  std::vector<std::map<std::string, std::string> >::const_iterator d_ri;
+  std::vector<std::map<std::string, std::string>> d_records;
+  std::vector<std::map<std::string, std::string>>::const_iterator d_ri;
 
   mrb_state *mrb;
   mrbc_context *mrbc;
 
   string init_code;
   string lookup_code;
+  bool nodot_flag;
 };
 
 /* SECOND PART */
@@ -185,6 +187,7 @@ public:
     declare(suffix, "filename", "Filename of the script for mruby backend", "");
     declare(suffix, "initcode", "Init Code", "");
     declare(suffix, "lookupcode", "Lookup Code", "");
+    declare(suffix, "compat3x", "pdns-3.x compat", "yes");
   }
   DNSBackend *make(const string &suffix = "")
   {
@@ -205,7 +208,7 @@ public:
     BackendMakers().report(new MrubyFactory);
     L << Logger::Info
       << "[mrubybackend] This is the mruby backend version " VERSION
-         " (" __DATE__ ", " __TIME__ ") reporting" << endl;
+      << " (" __DATE__ ", " __TIME__ ") reporting" << endl;
   }
 };
 

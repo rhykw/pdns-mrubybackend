@@ -1,15 +1,20 @@
-# pdns-mrubybackend
+# pdns-mrubybackend [![Build Status](https://travis-ci.org/rhykw/pdns-mrubybackend.svg?branch=master)](https://travis-ci.org/rhykw/pdns-mrubybackend)
 
 ## What is pdns-mrubybackend
 __pdns-mrubybackend is backend extension module using Scripting Language [mruby](http://www.mruby.org/) for [PowerDNS](https://github.com/PowerDNS/pdns).__
+
+### Notice
+Current code of pdns-mrubybackend does not work for pdns-3.x.
+If you want to use with pdns-3.x , please use [v1.3.0](https://github.com/rhykw/pdns-mrubybackend/releases/tag/v1.3.0)
 
 
 ## Install
 
 Please use `build.sh`
 
-```
+```sh
 sh ./build.sh
+sudo cp src/mrubybackend.so /usr/lib64/pdns/
 ```
 
 ## Examples
