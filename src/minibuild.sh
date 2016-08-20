@@ -3,7 +3,7 @@
 set -ex
 
 LIBMRUBY=../mruby/build/host/lib/libmruby.a
-LIBS="-lmysqlclient -lGeoIP"
+LIBS="-lmysqlclient -lmaxminddb"
 MRUBY_INCLUDE_DIR=../mruby/include/
 
 PDNS_SRC_DIR=../build/pdns-src
