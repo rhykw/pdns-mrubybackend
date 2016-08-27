@@ -17,16 +17,19 @@ addons:
     - libboost-program-options-dev
     - libboost-serialization-dev
     - libmysql++-dev
-    - libgeoip-dev
+    - software-properties-common
+    - python-software-properties
     - dnsutils
 before_script:
-  - wget -O - "http://geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.gz" | gunzip > /tmp/GeoLiteCity.dat
+  - sudo add-apt-repository -y ppa:maxmind/ppa
+  - sudo apt-get -qq update
+  - sudo apt-get install -y libmaxminddb0 libmaxminddb-dev mmdb-bin
+  - wget -O - "http://geolite.maxmind.com/download/geoip/database/GeoLite2-City.mmdb.gz" | gunzip > /tmp/GeoLite2-City.mmdb
   - sudo bash build-scripts/travis-install-pdns.sh
   - echo "local-address=127.0.0.1" >> pdns-mruby.conf.sample
   - sudo cp pdns-mruby.conf.sample /etc/powerdns/pdns.conf
   - sudo sed -e '/mruby-filename=/ s@^.*$@mruby-filename=/etc/powerdns/pdns-backend.rb@' -i /etc/powerdns/pdns.conf
   - sudo cp examples/pdns-backend.rb /etc/powerdns/pdns-backend.rb
-  - sudo sed -e '/^\$db_path =/ s@".*"@"/tmp/GeoLiteCity.dat"@' -i /etc/powerdns/pdns-backend.rb
 script:
   - bash ./build.sh
   - sudo cp src/libmrubybackend.so /usr/lib/x86_64-linux-gnu/pdns/libmrubybackend.so

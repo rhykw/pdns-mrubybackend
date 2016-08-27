@@ -4,12 +4,14 @@ MRuby::Build.new do |conf|
 
   conf.gembox 'default'
 
-  # conf.gem :github => 'matsumoto-r/mruby-vedis'
   conf.gem :github => 'mattn/mruby-mysql'
-  conf.gem :github => 'matsumoto-r/mruby-geoip'
+  conf.gem :github => 'happysiro/mruby-maxminddb'
 
   conf.cc do |cc|
     cc.flags = [ENV['CFLAGS'] || %w(-fPIC)]
   end
+
+  conf.linker.libraries << 'mysqlclient'
+  conf.linker.libraries << 'maxminddb'
 
 end

@@ -49,17 +49,18 @@ sudo cp src/mrubybackend.so /usr/lib64/pdns/
     rand.example.com.   120 IN  TXT "0.2835277512864"
     ```
 
-2. geoip balancing
+2. MaxMindDB(GeoIP) balancing
+
+    using with [mruby-maxminddb](https://github.com/happysiro/mruby-maxminddb).
 
     pdns-backend.rb
     ```ruby
-    $db_path = "/usr/share/GeoIP/GeoIPCity.dat"
-    $geoip   = GeoIP.new $db_path
+    $mmdb = MaxMindDB.new "/tmp/GeoLite2-City.mmdb"
     def lookup
       Powerdns::answer.clear
     
-      $geoip.record_by_addr "#{Powerdns::Request::remote_addr}"
-      cc = $geoip.country_code
+      $mmdb.lookup_string "#{Powerdns::Request::remote_addr}"
+      cc = $mmdb.country_code
     
       records = [
         {"name"=>"example.com"     ,"type"=>"SOA" ,"content"=>"ns.example.com. hostmaster.example.com. 1 1800 900 604800 3600",},
