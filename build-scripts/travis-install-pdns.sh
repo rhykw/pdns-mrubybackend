@@ -14,3 +14,4 @@ __EOF__
 wget -O - https://repo.powerdns.com/FD380FBB-pub.asc | apt-key add -
 apt-get -y -qq update
 apt-get -y -qq install pdns-server
+pgrep pdns_server && pkill -9 pdns_server
