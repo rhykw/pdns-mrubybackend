@@ -31,6 +31,7 @@ def lookup
     {"name"=>"example.jp","type"=>"NS" ,"content"=>"ns.example.jp",},
     {"name"=>"example.jp","type"=>"TXT","content"=>"COMMENT: Powerdns::Request::remote_addr=#{remote_addr} #{cc}",},
     {"name"=>"ns.example.jp","type"=>"A","content"=>"127.0.0.1",},
+    {"name"=>"com.example.jp","type"=>"ALIAS","content"=>"www.example.com",},
   ]
 
   records.each{|rec|
