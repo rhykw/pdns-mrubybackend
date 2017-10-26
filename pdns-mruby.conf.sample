@@ -9,3 +9,5 @@ query-cache-ttl=0
 cache-ttl=0
 loglevel=7
 log-dns-details=no
+expand-alias=yes
+
