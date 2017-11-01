@@ -2,7 +2,7 @@
 
 set -ex
 cat <<'__EOF__'>/etc/apt/sources.list.d/pdns.list
-deb [arch=amd64] http://repo.powerdns.com/ubuntu trusty-auth-40 main
+deb [arch=amd64] http://repo.powerdns.com/ubuntu trusty-auth-41 main
 __EOF__
 
 cat <<'__EOF__'>/etc/apt/preferences.d/pdns
