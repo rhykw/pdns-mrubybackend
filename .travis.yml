@@ -37,4 +37,5 @@ script:
   - pgrep pdns_server
   - dig +answer @127.0.0.1 example.jp. ANY
   - dig +answer @127.0.0.1 example.jp. TXT | grep -qF "Powerdns::Request::remote_addr=127.0.0.1"
+  - dig +answer @127.0.0.1 r.example.jp. TXT | grep -qF "Powerdns::Request::real_remote_addr=127.0.0.1/32"
   - pgrep pdns_server
