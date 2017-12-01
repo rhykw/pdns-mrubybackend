@@ -30,6 +30,7 @@ def lookup
     {"name"=>"example.jp","type"=>"SOA","content"=>"ns.example.jp. hostmaster.example.jp. 1 1800 900 604800 3600",},
     {"name"=>"example.jp","type"=>"NS" ,"content"=>"ns.example.jp",},
     {"name"=>"example.jp","type"=>"TXT","content"=>"COMMENT: Powerdns::Request::remote_addr=#{remote_addr} #{cc}",},
+    {"name"=>"r.example.jp","type"=>"TXT","content"=>"COMMENT: Powerdns::Request::real_remote_addr=#{Powerdns::Request::real_remote_addr}",},
     {"name"=>"ns.example.jp","type"=>"A","content"=>"127.0.0.1",},
   ]
 
