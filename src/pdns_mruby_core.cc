@@ -35,6 +35,7 @@ namespace PowerdnsMrubyBackend
     return mrb_hash_get(mrb, r, mrb_str_new_cstr(mrb, #method_suffix));        \
   }
 
+POWERDNS_MRUBY_BACKEND_DEFINE_METHOD_MRB_GET_REQUEST(real_remote_addr);
 POWERDNS_MRUBY_BACKEND_DEFINE_METHOD_MRB_GET_REQUEST(remote_addr);
 POWERDNS_MRUBY_BACKEND_DEFINE_METHOD_MRB_GET_REQUEST(type);
 POWERDNS_MRUBY_BACKEND_DEFINE_METHOD_MRB_GET_REQUEST(domain);
@@ -139,6 +140,8 @@ void install_mrb_class(mrb_state *mrb)
                           MRB_ARGS_NONE());
   mrb_define_class_method(mrb, rclass, "answer", mrb_get_answer_records,
                           MRB_ARGS_NONE());
+  mrb_define_class_method(mrb, req_rclass, "real_remote_addr",
+                          mrb_request_get_real_remote_addr, MRB_ARGS_NONE());
   mrb_define_class_method(mrb, req_rclass, "remote_addr",
                           mrb_request_get_remote_addr, MRB_ARGS_NONE());
   mrb_define_class_method(mrb, req_rclass, "type", mrb_request_get_type,

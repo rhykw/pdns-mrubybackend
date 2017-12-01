@@ -91,6 +91,7 @@ public:
   {
     map<string, string> the_request;
 
+    the_request["real_remote_addr"] = p->getRealRemote().toString();
     the_request["remote_addr"] = p->getRemote().toString();
     the_request["type"] = type.getName();
     the_request["domain"] = qdomain.toString(".", !nodot_flag);
