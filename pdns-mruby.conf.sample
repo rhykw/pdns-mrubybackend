@@ -9,3 +9,6 @@ query-cache-ttl=0
 cache-ttl=0
 loglevel=7
 log-dns-details=no
+
+allow-recursion=127.0.0.1
+recursor=8.8.8.8
