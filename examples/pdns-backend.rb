@@ -30,14 +30,19 @@ def lookup
     {"name"=>"example.jp","type"=>"SOA","content"=>"ns.example.jp. hostmaster.example.jp. 1 1800 900 604800 3600",},
     {"name"=>"example.jp","type"=>"NS" ,"content"=>"ns.example.jp",},
     {"name"=>"example.jp","type"=>"TXT","content"=>"COMMENT: Powerdns::Request::remote_addr=#{remote_addr} #{cc}",},
+    {'name'=>'example.jp','type'=>'MX','content'=>'10 ns.example.jp',},
+    {"name"=>"example.jp","type"=>"A","content"=>"192.168.0.123",},
     {"name"=>"r.example.jp","type"=>"TXT","content"=>"COMMENT: Powerdns::Request::real_remote_addr=#{Powerdns::Request::real_remote_addr}",},
     {"name"=>"ns.example.jp","type"=>"A","content"=>"127.0.0.1",},
+    {"name"=>"blog.example.jp","type"=>"ALIAS","content"=>"blog.rhykw.net.",},
   ]
 
-  records.each{|rec|
-    if( rec["name"] == Powerdns::Request::domain && (Powerdns::Request::type == "ANY" || rec["type"] == Powerdns::Request::type) )
-      Powerdns::answer.push( rec )
+  records.each do |rec|
+    next unless rec['name'] == Powerdns::Request.domain
+    if Powerdns::Request.type == 'ANY' ||
+       Powerdns::Request.type == rec['type']
+      Powerdns.answer.push(rec)
     end
-  }
+  end
 
 end
