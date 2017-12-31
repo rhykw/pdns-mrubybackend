@@ -36,6 +36,7 @@ script:
   - sudo /usr/sbin/pdns_server --daemon 2>&1
   - pgrep pdns_server
   - dig +answer @127.0.0.1 example.jp. ANY
-  - dig +answer @127.0.0.1 example.jp. TXT | grep -qF "Powerdns::Request::remote_addr=127.0.0.1"
-  - dig +answer @127.0.0.1 r.example.jp. TXT | grep -qF "Powerdns::Request::real_remote_addr=127.0.0.1/32"
+  - dig +answer @127.0.0.1 example.jp. TXT | grep -F "Powerdns::Request::remote_addr=127.0.0.1"
+  - dig +answer @127.0.0.1 r.example.jp. TXT | grep -F "Powerdns::Request::real_remote_addr=127.0.0.1/32"
+  - dig +answer @127.0.0.1 blog.example.jp. | grep -E "blog\.example\.jp\.\s+\d+\s+IN\s+A\s+219\.94\.251\.80"
   - pgrep pdns_server
