@@ -1,3 +1,5 @@
+**(8th July 2018) I have decided to discontinue development of pdns-mrubybackend.**
+
 # pdns-mrubybackend [![Build Status](https://travis-ci.org/rhykw/pdns-mrubybackend.svg?branch=master)](https://travis-ci.org/rhykw/pdns-mrubybackend)
 
 ## What is pdns-mrubybackend
