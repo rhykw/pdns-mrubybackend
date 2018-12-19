@@ -145,8 +145,10 @@ public:
     std::map<std::string, std::string> recordMap = *d_ri;
     DNSResourceRecord record;
     record.ttl = 120;
+    record.scopeMask = 0;
     record.auth = 1;
-    record.qtype = QType(QType::chartocode(recordMap["type"].c_str()));
+    record.content.clear();
+    record.qtype = recordMap["type"];
     record.content = recordMap["content"];
     record.qname = DNSName(recordMap["name"]);
     rr = record;
